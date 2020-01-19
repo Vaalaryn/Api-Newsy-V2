@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 
 class DeleteUser extends FormRequest
 {
@@ -13,7 +14,7 @@ class DeleteUser extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,9 @@ class DeleteUser extends FormRequest
     public function rules()
     {
         return [
-            //
+//            'token' => Config::get("constante.validation.token"),
+//            'password' => Config::get("constante.validation.password"),
+//            'mail' => Config::get("constante.validation.mail"),
         ];
     }
 }

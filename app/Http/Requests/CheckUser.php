@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 
 class CheckUser extends FormRequest
 {
@@ -24,7 +25,9 @@ class CheckUser extends FormRequest
     public function rules()
     {
         return [
-            'token'
+            'token' => Config::get('constante.validation.token'),
+            'password' => Config::get('constante.validation.password'),
+            'mail' => Config::get('constante.validation.mail')
         ];
     }
 }

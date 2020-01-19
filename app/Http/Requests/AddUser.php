@@ -25,7 +25,7 @@ class AddUser extends FormRequest
     public function rules()
     {
         return [
-            'mail' => Config::get("constante.validation.mail"),
+            'mail' => Config::get("constante.validation.mail_unique"),
             'username' => Config::get("constante.validation.username"),
             'password' => Config::get("constante.validation.password"),
             'password_confirm' => Config::get("constante.validation.password_confirm"),
