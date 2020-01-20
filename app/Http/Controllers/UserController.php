@@ -90,15 +90,15 @@ class UserController
             ->where('mail', $request->input('mail'))
             ->where('token', $request->input('token'))
             ->first();
-        $field_to_update = json_decode($request->input('field_to_update'));
+        $field_to_update = json_decode($request->input('field_to_update'), true);
         if ($user && Hash::check($request->input('password'), $user->password)) {
-            if (array_key_exists('mail', $field_to_update['mail'])) {
+            if (array_key_exists('mail', $field_to_update)) {
                 $validator = \Validator::make(['mail' => $field_to_update['mail']], ['mail' => Config::get('constante.validation.mail_unique')]);
                 if (!$validator->fails()) {
                     $update['mail'] = $field_to_update['mail'];
                 }
             }
-            if (array_key_exists('password', $field_to_update['password'])) {
+            if (array_key_exists('password', $field_to_update)) {
                 $validator = \Validator::make([
                     'password' => $field_to_update['password'],
                     'password_confirm' => $field_to_update['password_confirm']
@@ -107,10 +107,10 @@ class UserController
                     'password_confirm' => Config::get('constante.validation.password_confirm')
                 ]);
                 if (!$validator->fails()) {
-                    $update['password'] = $field_to_update['password'];
+                    $update['password'] = Hash::make($field_to_update['password']);
                 }
             }
-            if (array_key_exists('username', $field_to_update['username'])) {
+            if (array_key_exists('username', $field_to_update)) {
                 $validator = \Validator::make(['username' => $field_to_update['username']], ['username' => Config::get('constante.validation.username')]);
                 if (!$validator->fails()) {
                     $update['username'] = $field_to_update['username'];
@@ -118,7 +118,27 @@ class UserController
             }
 
         }
-        dd($user);
+        try {
+            DB::table('users')
+                ->where('mail', $user->mail)
+                ->update($update);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response(Lang::get('user.response.update.not_ok'), Config::get('constante.type_retour.erreur'));
+        }
+        return response(Lang::get('user.response.update.ok'), Config::get('constante.type_retour.ok'));
+    }
+
+    public function updateData($request)
+    {
+        try {
+            $update['data'] = $request->input('data');
+            DB::table('users')->where('mail', $request->input('mail'))->update($update);
+            return response("", Config::get('constante.type_retour.ok'));
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response(Lang::get('user.response.update.ok'), Config::get('constante.type_retour.erreur'));
+        }
     }
 
     private function randomToken(): string

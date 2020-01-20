@@ -20,12 +20,12 @@ Route::prefix('{lang?}')->middleware('locale')->group(function () {
         Route::group(['middleware' => 'auth.api'], function () {
             Route::post('delete', 'UserController@delete');
             Route::post('update', 'UserController@update');
-            Route::post('getData','UserController@getData');
-            Route::post('updateData','UserController@updateData');
+            Route::post('updateData', 'UserController@updateData');
         });
     });
 });
 
-
-Route::post('newsy', 'NewsyController@request');
+Route::group(['middleware' => 'auth.api'], function () {
+    Route::post('newsy', 'NewsyController@request');
+});
 
