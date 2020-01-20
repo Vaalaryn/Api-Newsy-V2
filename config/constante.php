@@ -20,7 +20,7 @@ return [
         'username' => 'required|max:60|regex:/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/',
         'password' => 'required|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%&?@])[0-9a-zA-Z!#$%&?@]{8,}$/',
         'password_confirm' => 'required|same:password',
-        'token' => 'required|exist:users|max:22|min:22'
+        'token' => 'required|exists:users|max:22|min:22'
     ],
     'token' => [
         'limit' => 7,

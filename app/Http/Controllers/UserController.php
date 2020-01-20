@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddUser;
 use App\Http\Requests\ConnectUser;
 use App\Http\Requests\DeleteUser;
+use App\Http\Requests\UpdateUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -61,7 +62,7 @@ class UserController
 
     public function delete(DeleteUser $request)
     {
-        try{
+        try {
             $user = DB::table('users')
                 ->select('*')
                 ->where('mail', $request->input('mail'))
@@ -73,18 +74,51 @@ class UserController
                     ->where('token', $request->input('token'))
                     ->delete();
                 return response(Lang::get('user.response.delete.ok'), Config::get('constante.type_retour.ok'));
-            }else{
+            } else {
                 return response(Lang::get('user.response.delete.password'), Config::get('constante.type_retour.bad_request'));
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::error($e);
-            return response(Lang::get('user.response.delete.not_ok'),  Config::get('constante.type_retour.erreur'));
+            return response(Lang::get('user.response.delete.not_ok'), Config::get('constante.type_retour.erreur'));
         }
     }
 
-    public function update()
+    public function update(UpdateUser $request)
     {
-        return '';
+        $update = [];
+        $user = DB::table('users')
+            ->where('mail', $request->input('mail'))
+            ->where('token', $request->input('token'))
+            ->first();
+        $field_to_update = json_decode($request->input('field_to_update'));
+        if ($user && Hash::check($request->input('password'), $user->password)) {
+            if (array_key_exists('mail', $field_to_update['mail'])) {
+                $validator = \Validator::make(['mail' => $field_to_update['mail']], ['mail' => Config::get('constante.validation.mail_unique')]);
+                if (!$validator->fails()) {
+                    $update['mail'] = $field_to_update['mail'];
+                }
+            }
+            if (array_key_exists('password', $field_to_update['password'])) {
+                $validator = \Validator::make([
+                    'password' => $field_to_update['password'],
+                    'password_confirm' => $field_to_update['password_confirm']
+                ], [
+                    'password' => Config::get('constante.validation.password'),
+                    'password_confirm' => Config::get('constante.validation.password_confirm')
+                ]);
+                if (!$validator->fails()) {
+                    $update['password'] = $field_to_update['password'];
+                }
+            }
+            if (array_key_exists('username', $field_to_update['username'])) {
+                $validator = \Validator::make(['username' => $field_to_update['username']], ['username' => Config::get('constante.validation.username')]);
+                if (!$validator->fails()) {
+                    $update['username'] = $field_to_update['username'];
+                }
+            }
+
+        }
+        dd($user);
     }
 
     private function randomToken(): string
