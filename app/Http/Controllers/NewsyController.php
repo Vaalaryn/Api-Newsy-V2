@@ -4,10 +4,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\NewsyRequest;
+
 class NewsyController
 {
-    public function request()
+    public function request(NewsyRequest $request)
     {
-        return "request";
+
+        return response("", 200);
     }
 }
