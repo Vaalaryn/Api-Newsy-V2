@@ -23,9 +23,10 @@ Route::prefix('{lang?}')->middleware('locale')->group(function () {
             Route::post('updateData', 'UserController@updateData');
         });
     });
+    Route::group(['middleware' => 'auth.api'], function () {
+        Route::post('api/newsy', 'NewsyController@request');
+    });
 });
 
-Route::group(['middleware' => 'auth.api'], function () {
-    Route::post('newsy', 'NewsyController@request');
-});
+
 
