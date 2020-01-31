@@ -25,7 +25,7 @@ class NewsyRequest extends FormRequest
     public function rules()
     {
         return [
-            'endpoint' => Config::get('constante.validation.endpoint') . implode(Config::get('constante.newsy.endpoint'), ', '),
+            'endpoint' => Config::get('constante.validation.endpoint') . implode(',', Config::get('constante.newsy.endpoints')),
         ];
     }
 }
