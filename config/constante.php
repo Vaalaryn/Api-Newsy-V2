@@ -20,7 +20,8 @@ return [
         'username' => 'required|max:60|regex:/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/',
         'password' => 'required|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%&?@])[0-9a-zA-Z!#$%&?@]{8,}$/',
         'password_confirm' => 'required|same:password',
-        'token' => 'required|exists:users|max:22|min:22'
+        'token' => 'required|exists:users|max:22|min:22',
+        'endpoint' => 'required|in:'
     ],
     'token' => [
         'limit' => 7,
@@ -29,26 +30,21 @@ return [
     'newsy' => [
         'key' => env('API_KEY'),
         'url' => 'https://newsapi.org/v2/',
-        'endpoints' => [
-            'topHeadlines' => 'top-headlines',
-            'everything' => 'everything',
-            'sources' => 'sources'
-        ],
+        'endpoints' => ['top-headlines', 'everything', 'sources'],
         'valid_param' => [
-            'topHeadlines' => [
+            'top-headlines' => [
                 'restricted' => [
                     'country' => ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za'],
                     'category' => ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'],
                 ],
                 'free' => [
-                    'sources' => 'sources',//route /sources can't mix with countru or category
-                    'q' => 'q', //anything
-                    'pageSize' => 'pageSize', //int
-                    'page' => 'page' //int
+                    'sources',
+                    'q',
+                    'pageSize',
+                    'page'
                 ],
             ],
-            'everything' => [
-
+            'everything' => [ // TODO : restricted
                 'restricted' => [
                 ],
                 'free' => [

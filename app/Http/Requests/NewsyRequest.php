@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 
 class NewsyRequest extends FormRequest
 {
@@ -24,8 +25,7 @@ class NewsyRequest extends FormRequest
     public function rules()
     {
         return [
-            'path' => 'required',
-            'params' => ''
+            'endpoint' => Config::get('constante.validation.endpoint') . implode(Config::get('constante.newsy.endpoint'), ', '),
         ];
     }
 }

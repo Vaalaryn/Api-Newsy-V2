@@ -11,14 +11,18 @@ class NewsyController
 {
     public function request(NewsyRequest $request)
     {
-
-        dd(json_decode('{"key": "data"}'));
         $client = new \GuzzleHttp\Client();
+        $endpoint = $request->input('endpoint');
+        $datas = json_decode($request->input('params'));
 
-        $url = Config::get("constante.newsy.url") . Config::get("constante.newsy.endpoints")['th'] . '?apiKey=' . Config::get("constante.newsy.key");
-        $datas = explode(" ", $request->input("params"));
+        $url = Config::get("constante.newsy.url") . $endpoint . '?apiKey=' . Config::get("constante.newsy.key");
+        
         foreach ($datas as $key => $data) {
-            $url .= "&" . $key . "=" . $data;
+            if ((array_key_exists($key, Config::get('constante.newsy.valid_params' . $endpoint . 'restricted'))
+                    && in_array($data, Config::get('constante.newsy.valid_params' . $endpoint . 'restricted' . $key)))
+                || in_array($key, Config::get('constante.newsy.valid_params' . $endpoint . 'free'))) {
+                $url .= "&" . $key . "=" . $data;
+            }
         }
         $request = $client->get($url);
         $response = $request->getBody();
