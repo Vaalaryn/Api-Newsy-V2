@@ -9,6 +9,7 @@ return [
         'bad_request' => 400,
         'abort' => 403,
         'not_found' => 404,
+        'too_many_request' => 429,
         'erreur' => 500,
     ],
     'value' => [
@@ -28,6 +29,10 @@ return [
         'length' => 22
     ],
     'newsy' => [
+        'limit' => [
+          'time' => 1,
+          'number' => 10
+        ],
         'key' => env('API_KEY'),
         'url' => 'https://newsapi.org/v2/',
         'endpoints' => ['top-headlines', 'everything', 'sources'],

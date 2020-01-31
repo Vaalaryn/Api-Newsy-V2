@@ -9,7 +9,6 @@ use App\Http\Requests\ConnectUser;
 use App\Http\Requests\DeleteUser;
 use App\Http\Requests\UpdateUser;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

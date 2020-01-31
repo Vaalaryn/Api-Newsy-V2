@@ -16,6 +16,9 @@ return [
           'ok' => 'Suppression effectué',
           'not_ok' => 'Erreur lors de la suppression du compte',
           'password' => 'le mot de passe ne correspond pas'
+      ],
+      'newsy' => [
+          'too_many_request' => 'Trop grand nombre de requetes effectuer dans les :time dernieres minutes'
       ]
   ]
 ];
