@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 
-class DeleteUser extends FormRequest
+class NewsyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,7 @@ class DeleteUser extends FormRequest
     public function rules()
     {
         return [
-//            'token' => Config::get("constante.validation.token"),
-//            'password' => Config::get("constante.validation.password"),
-//            'mail' => Config::get("constante.validation.mail"),
+            'endpoint' => Config::get('constante.validation.endpoint') . implode(',', Config::get('constante.newsy.endpoints')),
         ];
     }
 }
