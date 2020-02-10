@@ -15,7 +15,7 @@ class CreateRequestTable extends Migration
     {
         Schema::create('request', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->bigInteger('user_id');
+            $table->string('user_id', 100);
             $table->timestamp('request_timestamp');
         });
     }

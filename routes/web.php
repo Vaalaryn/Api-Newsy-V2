@@ -29,4 +29,3 @@ Route::prefix('{lang?}')->middleware('locale')->group(function () {
 });
 
 
-
