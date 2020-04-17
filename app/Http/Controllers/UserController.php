@@ -9,6 +9,7 @@ use App\Http\Requests\ConnectUser;
 use App\Http\Requests\DeleteUser;
 use App\Http\Requests\UpdateUser;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -128,7 +129,7 @@ class UserController
         return response(Lang::get('user.response.update.ok'), Config::get('constante.type_retour.ok'));
     }
 
-    public function updateData($request)
+    public function updateData(Request $request)
     {
         try {
             $update['data'] = $request->input('data');
